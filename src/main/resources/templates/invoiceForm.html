@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Generate Invoice</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+        .row.content {height: 1500px}
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+            .row.content {height: auto;}
+        }
+
+        fieldset.scheduler-border {
+            border: 1px groove #ddd !important;
+            padding: 0 1.4em 1.4em 1.4em !important;
+            margin: 0 0 1.5em 0 !important;
+            -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+        }
+
+        legend.scheduler-border {
+            font-size: 1.2em !important;
+            font-weight: bold !important;
+            text-align: left !important;
+            width:auto;
+            padding:0 10px;
+            border-bottom:none;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav">
+            <h5>Welcome, <p th:text="|${session.userName}|"/></h5>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="/pdfgen/home">Home</a></li>
+                <li><a href="/pdfgen/htmltopdfForm">Generate PDF from HTML</a></li>
+                <li class="active"><a href="/pdfgen/invoiceForm">Generate Invoice Pdf</a></li>
+                <li><a href="/pdfgen/logout">Logout</a></li>
+            </ul><br>
+
+        </div>
+
+        <div class="col-sm-9">
+            <h4>Generate Invoice</h4>
+            <hr>
+
+            <div th:if="${successMsg}" th:utext="${successMsg}" class="alert alert-success" role="alert"/>
+            <form action="/pdfgen/generateInvoice" method="post">
+                <input type="hidden" id="totalNoOfItems" name="totalNoOfItems" th:value="${indx}"/>
+                <!--        <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+                <!--                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>-->
+
+                <!--        <div th:if="${errorMsg}" th:text="|${errorMsg}!|"/>-->
+                <!--            <p th:text="|${errorMsg}!|" />-->
+                <!--        </div>-->
+                <!--        <div class="alert alert-danger" role="alert"><div th:if="${errorMsg}" th:text="|${errorMsg}!|"/></div>-->
+
+                <div th:if="${errorMsg}" th:text="|${errorMsg}!|" class="alert alert-danger" role="alert"/>
+
+                <!--                <div class="form-floating">-->
+                <!--                    <input type="textarea" class="form-control" id="htmlContent" name="htmlContent" placeholder="HTML Content">-->
+                <!--                    <label for="htmlContent">Html Content</label>-->
+                <!--                </div>-->
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="customerName">Customer Name OR Email</label>
+                        <input type="text" class="form-control" id="customerName" name="customerName" required="true" placeholder="Customer Name or Email">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="customerGSTNo">Customer GST No.</label>
+                        <input type="text" class="form-control" id="customerGSTNo" name="customerGSTNo" placeholder="Customer GST No.">
+                    </div>
+
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label for="invoiceFileName">Invoice File Name</label>-->
+<!--                    <input type="text" class="form-control" id="invoiceFileName" name="invoiceFileName" placeholder="invoice file name">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <label for="customerGSTNo">Customer GST No.</label>-->
+<!--                    <input type="text" class="form-control" id="customerGSTNo" name="customerGSTNo" placeholder="Customer GST No.">-->
+<!--                </div> -->
+                <div class="form-group">
+                    <label for="customerGSTAddress">Customer GST Address</label>
+                    <input type="text" class="form-control" id="customerGSTAddress" name="customerGSTAddress" placeholder="Customer GST Address">
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="invoiceDate">Invoice Date</label>
+                        <input type="date" class="form-control" id="invoiceDate" name="invoiceDate" required="true" placeholder="Invoice Date">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="OrderId">Invoice Number OR Order Id</label>
+                        <input type="text" class="form-control" id="OrderId" name="OrderId" required="true" placeholder="Order Id or Invoice Number">
+                    </div>
+                </div>
+
+<!--                <div class="form-group">-->
+<!--                    <label for="OrderId">Order Id</label>-->
+<!--                    <input type="text" class="form-control" id="OrderId" name="OrderId" placeholder="Order Id">-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <label for="invoiceNumber">Invoice Number</label>-->
+<!--                    <input type="text" class="form-control" id="invoiceNumber" name="invoiceNumber" placeholder="Invoice Number">-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label for="invoiceDate">Invoice Date</label>-->
+<!--                    <input type="text" class="form-control" id="invoiceDate" name="invoiceDate" placeholder="Invoice Date">-->
+<!--                </div>-->
+                <fieldset class="scheduler-border">
+                    <legend  class="scheduler-border">Product Details</legend>
+
+                <div class="form-group row">
+                    <div class="col-sm-5">
+                        <label for="bookTitle1">Title</label>
+                        <input type="text" class="form-control" id="bookTitle1" name="bookTitle1" required="true" placeholder="Book Title">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="bookPrice1">Price</label>
+                        <input type="text" class="form-control" id="bookPrice1" name="bookPrice1" required="true" placeholder="Book Price">
+                    </div>
+                    <div class="col-sm-1">
+                        <label for="gstpercent1">GST(%)</label>
+                        <input type="text" class="form-control" id="gstpercent1" name="gstpercent1" required="true" placeholder="GST (%)">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="gstAmount1">GST Amount</label>
+                        <input type="text" class="form-control" id="gstAmount1" name="gstAmount1" required="true" placeholder="GSTAmount">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="subtotal1">Subtotal</label>
+                        <input type="text" class="form-control" id="subtotal1" name="subtotal1" required="true" placeholder="Subtotal">
+                    </div>
+                </div>
+                <div id="addmoreItems1">
+                    <div class="col-md-12 text-right">
+                    <button class="btn btn-sm btn-primary" type="button" th:attr="onclick='addMore(\'' + ${indx} + '\')'">Add</button>
+                    </div>
+                </div>
+                </fieldset>
+                <div class="form-group">
+                    <label for="orderTotal">Order Total</label>
+                    <input type="text" class="form-control" id="orderTotal" name="orderTotal" required="true" placeholder="orderTotal">
+                </div>
+
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Generate Invoice</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer class="container-fluid">
+<!--    <p>&copy; </p>-->
+</footer>
+
+</body>
+</html>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
+
+<script th:inline="javascript">
+    protocol = window.location.protocol;
+    host = window.location.host;
+    function addMore(indx) {
+        //var ind = [[${indx}]];
+        alert("indx="+indx);
+        //var dataString = 'indx=' + [[${indx}]];
+        var dataString = 'indx=' + indx;
+        alert("dataString="+dataString);
+        //alert("host="+host);
+        var eburl = protocol + '//' + host + '/pdfgen/addMoreItems/';
+        alert("eburl="+eburl);
+        $.ajax({
+            type: "POST",
+            url: eburl,
+            data: dataString,
+            cache: false,
+            success: function (data) {
+                console.log(data);
+                //modal.find('addmoreItems').html(data);
+                //alert("innerHTML="+document.getElementById("addmoreItems"+ indx).innerHTML);
+                document.getElementById("totalNoOfItems").value = parseInt(indx)+1;
+                document.getElementById("addmoreItems"+ indx).innerHTML = data;
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+</script>

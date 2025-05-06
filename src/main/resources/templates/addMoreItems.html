@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div class="form-group row">
+    <div class="col-sm-5">
+        <label th:attr="for='bookTitle'+${indx}">Title</label>
+        <input type="text" class="form-control" th:id="'bookTitle'+${indx}" th:name="'bookTitle'+${indx}" required="true"  placeholder="Book Title">
+    </div>
+    <div class="col-sm-2">
+        <label th:attr="for='bookPrice'+${indx}" >Price</label>
+        <input type="text" class="form-control" th:id="'bookPrice'+${indx}" th:name="'bookPrice'+${indx}" required="true" placeholder="Book Price">
+    </div>
+    <div class="col-sm-1">
+        <label th:attr="for='gstpercent'+${indx}" >GST(%)</label>
+        <input type="text" class="form-control" th:id="'gstpercent'+${indx}" th:name="'gstpercent'+${indx}" required="true" placeholder="GST (%)">
+    </div>
+    <div class="col-sm-2">
+        <label th:attr="for='gstAmount'+${indx}" >GST Amount</label>
+        <input type="text" class="form-control" th:id="'gstAmount'+${indx}" th:name="'gstAmount'+${indx}" required="true" placeholder="GST Amount">
+    </div>
+    <div class="col-sm-2">
+        <label th:attr="for='subtotal'+${indx}" >Subtotal</label>
+        <input type="text" class="form-control" th:id="'subtotal'+${indx}" th:name="'subtotal'+${indx}" required="true" placeholder="Subtotal">
+    </div>
+</div>
+<div th:id="'addmoreItems'+${indx}">
+    <div class="col-md-12 text-right">
+        <button class="btn btn-sm btn-primary" type="button" th:attr="onclick='addMore(\'' + ${indx} + '\')'">Add</button>
+    </div>
+</div>
+<!--<div class="col-md-12 text-right">-->
+<!--    <button class="btn btn-sm btn-primary" type="button" th:attr="onclick='addMore(\'' + ${indx} + '\')'" >Add</button>-->
+<!--</div>-->

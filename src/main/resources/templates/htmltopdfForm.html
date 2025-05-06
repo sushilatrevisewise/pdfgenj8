@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Generate PDF from HTML</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+        .row.content {height: 1500px}
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+            .row.content {height: auto;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav">
+            <h5>Welcome, <p th:text="|${session.userName}|"/></h5>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="/pdfgen/home">Home</a></li>
+                <li class="active"><a href="/pdfgen/htmltopdfForm">Generate PDF from HTML</a></li>
+                <li><a href="/pdfgen/invoiceForm">Generate Invoice Pdf</a></li>
+                <li><a href="/pdfgen/logout">Logout</a></li>
+            </ul><br>
+
+        </div>
+
+        <div class="col-sm-9">
+            <h4>Generate PDF From HTML</h4>
+            <hr>
+            <br><br>
+            <div th:if="${successMsg}" th:utext="${successMsg}" class="alert alert-success" role="alert"/>
+            <form action="/pdfgen/generatepdffromhtml" method="post">
+                <!--        <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+<!--                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>-->
+
+                <!--        <div th:if="${errorMsg}" th:text="|${errorMsg}!|"/>-->
+                <!--            <p th:text="|${errorMsg}!|" />-->
+                <!--        </div>-->
+                <!--        <div class="alert alert-danger" role="alert"><div th:if="${errorMsg}" th:text="|${errorMsg}!|"/></div>-->
+
+                <div th:if="${errorMsg}" th:text="|${errorMsg}!|" class="alert alert-danger" role="alert"/>
+
+<!--                <div class="form-floating">-->
+<!--                    <input type="textarea" class="form-control" id="htmlContent" name="htmlContent" placeholder="HTML Content">-->
+<!--                    <label for="htmlContent">Html Content</label>-->
+<!--                </div>-->
+                <div class="form-group">
+                    <label for="pdfFileName">PDF File Name(Ex. class_1_pyp_2024.pdf)</label>
+                    <input type="text" class="form-control" id="pdfFileName" name="pdfFileName" required="true" placeholder="PDF file name">
+                </div>
+                <div class="form-group">
+                    <label for="htmlContent">Html Content</label>
+                    <textarea class="form-control" id="htmlContent" name="htmlContent" required="true" rows="10" placeholder="Paste HTML content here"></textarea>
+                </div>
+
+
+                <!--        <div class="checkbox mb-3">-->
+                <!--            <label>-->
+                <!--                <input type="checkbox" value="remember-me"> Remember me-->
+                <!--            </label>-->
+                <!--        </div>-->
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Generate PDF</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer class="container-fluid">
+<!--    <p>&copy; </p>-->
+</footer>
+
+</body>
+</html>
